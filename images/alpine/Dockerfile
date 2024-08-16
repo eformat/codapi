@@ -1,6 +1,2 @@
-FROM alpine:3.18
-
-RUN adduser --home /sandbox --disabled-password sandbox
-
-USER sandbox
-WORKDIR /sandbox
+FROM registry.access.redhat.com/ubi9/ubi-micro:latest
+WORKDIR /tmp

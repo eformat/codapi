@@ -31,10 +31,11 @@ run:
 # Containers
 
 images:
-	docker build --file images/alpine/Dockerfile --tag codapi/alpine:latest images/alpine/
+	podman build --file images/alpine/Dockerfile --tag codapi/alpine:latest images/alpine/
+	podman build --file images/python/Dockerfile --tag codapi/python:latest images/python/
 
 network:
-	docker network create --internal codapi
+	podman network create --internal codapi
 
 # Host OS
 

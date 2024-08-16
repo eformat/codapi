@@ -47,6 +47,8 @@ func (e *Docker) Exec(req Request) Execution {
 		err = NewExecutionError("create temp dir", err)
 		return Fail(req.ID, err)
 	}
+	
+	// mike hack - keep temp around
 	defer os.RemoveAll(dir)
 
 	// if the command entry point file is not defined,
@@ -196,10 +198,10 @@ func (e *Docker) exec(box *config.Box, step *config.Step, req Request, dir strin
 	if step.Stdin {
 		// pass files to container from stdin
 		stdin := filesReader(files)
-		stdout, stderr, err = prog.RunStdin(stdin, req.ID, "docker", args...)
+		stdout, stderr, err = prog.RunStdin(stdin, req.ID, "podman", args...)
 	} else {
 		// pass files to container from temp directory
-		stdout, stderr, err = prog.Run(req.ID, "docker", args...)
+		stdout, stderr, err = prog.Run(req.ID, "podman", args...)
 	}
 
 	if err == nil {
@@ -348,6 +350,6 @@ func expandVars(command []string, name string) []string {
 func dockerKill(id string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), killTimeout)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, "docker", "kill", id)
+	cmd := exec.CommandContext(ctx, "podman", "kill", id)
 	return execy.Run(cmd)
 }
